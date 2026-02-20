@@ -13,8 +13,11 @@ struct ContentView: View {
 
     enum Tab: String, CaseIterable {
         case chat = "Chat"
+        case files = "Files"
         case terminal = "Terminal"
+        #if !os(macOS)
         case settings = "Settings"
+        #endif
     }
 
     var body: some View {
@@ -53,10 +56,14 @@ struct ContentView: View {
         switch tab {
         case .chat:
             AgentView()
+        case .files:
+            FileBrowserView()
         case .terminal:
             TerminalView()
+        #if !os(macOS)
         case .settings:
             SettingsView()
+        #endif
         }
     }
 }
@@ -66,10 +73,14 @@ extension ContentView.Tab {
         switch self {
         case .chat:
             return "bubble.left.and.bubble.right"
+        case .files:
+            return "folder"
         case .terminal:
             return "terminal"
+        #if !os(macOS)
         case .settings:
             return "gear"
+        #endif
         }
     }
 }

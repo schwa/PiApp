@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PiAppSupport
 
 @main
 struct PiAppApp: App {
@@ -13,5 +14,11 @@ struct PiAppApp: App {
         WindowGroup {
             ContentView()
         }
+        
+        #if os(macOS)
+        Settings {
+            SettingsView()
+        }
+        #endif
     }
 }
