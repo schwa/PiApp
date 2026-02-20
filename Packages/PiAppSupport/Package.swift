@@ -14,6 +14,7 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/schwa/PiSwift", branch: "main"),
         .package(url: "https://github.com/migueldeicaza/SwiftTerm", branch: "main"),
     ],
     targets: [
