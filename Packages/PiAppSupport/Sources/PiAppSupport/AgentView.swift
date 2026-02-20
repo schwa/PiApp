@@ -113,18 +113,6 @@ public struct AgentView: View {
 
     private var chatView: some View {
         VStack(spacing: 0) {
-            HStack {
-                Spacer()
-                Button {
-                    showingAPIKeySheet = true
-                } label: {
-                    Image(systemName: "key")
-                }
-                .buttonStyle(.borderless)
-                .padding(.horizontal)
-            }
-            .padding(.top, 8)
-
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 12) {
