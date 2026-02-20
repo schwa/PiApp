@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "PiAppSupport",
-    platforms: [.macOS(.v15), .iOS(.v18), .visionOS(.v2)],
+    platforms: [.macOS(.v26), .iOS(.v26), .visionOS(.v26)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(

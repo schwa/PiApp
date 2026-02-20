@@ -1,6 +1,7 @@
 import SwiftUI
 import PiSwiftAI
 import PiSwiftAgent
+import PiSwiftCodingAgent
 import Foundation
 
 enum KeyType: String, CaseIterable {
@@ -15,10 +16,12 @@ final class AgentManager {
     
     let provider: String
     let modelId: String
+    let workingDirectory: String
     
-    init(provider: String = "anthropic", modelId: String = "claude-opus-4-5") {
+    init(provider: String = "anthropic", modelId: String = "claude-opus-4-5", workingDirectory: String? = nil) {
         self.provider = provider
         self.modelId = modelId
+        self.workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
         refreshAgent()
     }
     
@@ -30,11 +33,19 @@ final class AgentManager {
             let trimmedKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
             let model = getModel(provider: .anthropic, modelId: modelId)
             
+            // Create coding tools with the current working directory
+            let tools = createCodingTools(cwd: workingDirectory)
+            
             let initialState = AgentState(
-                systemPrompt: "You are a helpful AI assistant.",
+                systemPrompt: """
+                    You are a helpful AI coding assistant. You have access to tools to read, write, and edit files, \
+                    as well as run bash commands. Use these tools to help users with coding tasks.
+                    
+                    Current working directory: \(workingDirectory)
+                    """,
                 model: model,
                 thinkingLevel: .off,
-                tools: [],
+                tools: tools,
                 messages: []
             )
             
@@ -293,56 +304,28 @@ public struct AgentView: View {
 
         let userMessage = AgentMessage.user(UserMessage(content: .text(text)))
 
-        print("[AgentView] Sending prompt: \(text)")
-        print("[AgentView] Agent state - model: \(agent.state.model.id), provider: \(agent.state.model.provider)")
-        print("[AgentView] Agent state - baseUrl: \(agent.state.model.baseUrl)")
-        
-        // Check if API key is available
-        if let apiKey = APIKeyManager.shared.getAPIKey(for: agentManager.provider) {
-            let prefix = String(apiKey.prefix(12))
-            let suffix = String(apiKey.suffix(4))
-            print("[AgentView] API key available, length: \(apiKey.count), key: \(prefix)...\(suffix)")
-        } else {
-            print("[AgentView] WARNING: No API key found!")
-        }
-
         do {
             try await agent.prompt(userMessage)
-            print("[AgentView] Prompt completed")
         } catch {
-            print("[AgentView] Prompt error: \(error)")
-            print("[AgentView] Prompt error type: \(type(of: error))")
-            print("[AgentView] Prompt error description: \(String(describing: error))")
             messages.append(ChatMessage(role: .assistant, content: "Error: \(error.localizedDescription)"))
         }
     }
 
     @MainActor
     private func handleAgentEvent(_ event: AgentEvent) {
-        print("[AgentView] Event: \(event)")
         switch event {
-        case .messageUpdate(let message, let assistantEvent):
-            print("[AgentView] messageUpdate - message: \(message), assistantEvent: \(assistantEvent)")
+        case .messageUpdate(_, let assistantEvent):
             if case .textDelta(_, let delta, _) = assistantEvent {
-                print("[AgentView] textDelta: \(delta)")
                 currentResponse += delta
             }
         case .messageEnd(let message):
-            print("[AgentView] messageEnd: \(message)")
             if case .assistant(let assistant) = message {
-                print("[AgentView] assistant content blocks: \(assistant.content)")
-                print("[AgentView] assistant stopReason: \(assistant.stopReason)")
-                if let errorMessage = assistant.errorMessage {
-                    print("[AgentView] assistant error: \(errorMessage)")
-                }
                 let fullText = assistant.content.compactMap { block -> String? in
                     if case .text(let textBlock) = block {
-                        print("[AgentView] text block: \(textBlock.text)")
                         return textBlock.text
                     }
                     return nil
                 }.joined()
-                print("[AgentView] fullText: \(fullText)")
                 messages.append(ChatMessage(role: .assistant, content: fullText))
                 currentResponse = ""
             }

@@ -18,21 +18,45 @@ struct ContentView: View {
     }
 
     var body: some View {
+        #if os(macOS)
         NavigationSplitView {
-            List(Tab.allCases, id: \.self, selection: $selectedTab) { tab in
-                Label(tab.rawValue, systemImage: tab.icon)
-                    .tag(tab)
+            List(selection: $selectedTab) {
+                ForEach(Tab.allCases, id: \.self) { tab in
+                    Label(tab.rawValue, systemImage: tab.icon)
+                        .tag(tab)
+                }
             }
             .navigationTitle("Pi")
         } detail: {
-            switch selectedTab {
-            case .chat:
-                AgentView()
-            case .terminal:
-                TerminalView()
-            case .settings:
-                SettingsView()
+            detailView
+        }
+        #else
+        TabView(selection: $selectedTab) {
+            ForEach(Tab.allCases, id: \.self) { tab in
+                detailView(for: tab)
+                    .tabItem {
+                        Label(tab.rawValue, systemImage: tab.icon)
+                    }
+                    .tag(tab)
             }
+        }
+        #endif
+    }
+    
+    @ViewBuilder
+    private var detailView: some View {
+        detailView(for: selectedTab)
+    }
+    
+    @ViewBuilder
+    private func detailView(for tab: Tab) -> some View {
+        switch tab {
+        case .chat:
+            AgentView()
+        case .terminal:
+            TerminalView()
+        case .settings:
+            SettingsView()
         }
     }
 }
