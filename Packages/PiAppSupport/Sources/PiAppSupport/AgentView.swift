@@ -82,6 +82,7 @@ public struct AgentView: View {
     @State private var apiKeyInput = ""
     @State private var selectedKeyType: KeyType = .apiKey
     @State private var agentManager: AgentManager
+    @FocusState private var isInputFocused: Bool
     
     @Environment(\.scenePhase) private var scenePhase
 
@@ -152,6 +153,7 @@ public struct AgentView: View {
                 TextField("Message...", text: $inputText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(1...5)
+                    .focused($isInputFocused)
                     .onSubmit {
                         sendMessage()
                     }
@@ -167,6 +169,19 @@ public struct AgentView: View {
                 .buttonStyle(.borderless)
             }
             .padding()
+            .onAppear {
+                isInputFocused = true
+            }
+            .onChange(of: isStreaming) {
+                if !isStreaming {
+                    isInputFocused = true
+                }
+            }
+            .onChange(of: showingAPIKeySheet) {
+                if !showingAPIKeySheet {
+                    isInputFocused = true
+                }
+            }
         }
     }
 
@@ -339,7 +354,10 @@ public struct AgentView: View {
                     }
                     return nil
                 }.joined()
-                messages.append(ChatMessage(role: .assistant, content: fullText))
+                // Only add message if there's actual text content
+                if !fullText.isEmpty {
+                    messages.append(ChatMessage(role: .assistant, content: fullText))
+                }
                 currentResponse = ""
             }
         default:
