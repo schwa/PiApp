@@ -84,6 +84,13 @@ public struct FileBrowserView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
+                        loadDirectory()
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
                         createNewFolder()
                     } label: {
                         Image(systemName: "folder.badge.plus")
@@ -96,6 +103,9 @@ public struct FileBrowserView: View {
                         Image(systemName: "doc.badge.plus")
                     }
                 }
+            }
+            .refreshable {
+                loadDirectory()
             }
             .sheet(isPresented: $showingFileContent) {
                 fileContentSheet
