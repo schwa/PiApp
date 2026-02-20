@@ -1,5 +1,5 @@
 {
-  "originHash" : "f7fcc678e466a47b88802ac89bd702614968815b9325e2524cfa8d4168989090",
+  "originHash" : "c49c76dd89755a1fd5eddc768c8d87c6bf780d5aaa24037eec6f33b9a836e4b4",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -26,15 +26,6 @@
       "state" : {
         "branch" : "main",
         "revision" : "4ed3ea99ff9dfd2a760509ddb31020f4b153ef93"
-      }
-    },
-    {
-      "identity" : "piswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/schwa/PiSwift",
-      "state" : {
-        "branch" : "main",
-        "revision" : "b2d579383f483d74591f1aa215ffbd1c77b81641"
       }
     },
     {

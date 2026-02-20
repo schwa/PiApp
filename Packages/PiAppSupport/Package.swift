@@ -14,7 +14,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/schwa/PiSwift", branch: "main"),
+        .package(path: "/Users/schwa/Projects/PiSwift"),
         .package(url: "https://github.com/migueldeicaza/SwiftTerm", branch: "main"),
     ],
     targets: [
@@ -24,6 +24,9 @@ let package = Package(
             name: "PiAppSupport",
             dependencies: [
                 .product(name: "SwiftTerm", package: "SwiftTerm"),
+                .product(name: "PiSwiftAI", package: "PiSwift"),
+                .product(name: "PiSwiftAgent", package: "PiSwift"),
+                .product(name: "PiSwiftCodingAgent", package: "PiSwift"),
             ]
         ),
         .testTarget(
