@@ -21,8 +21,21 @@ final class AgentManager {
     init(provider: String = "anthropic", modelId: String = "claude-opus-4-5", workingDirectory: String? = nil) {
         self.provider = provider
         self.modelId = modelId
-        self.workingDirectory = workingDirectory ?? FileManager.default.currentDirectoryPath
+        self.workingDirectory = workingDirectory ?? Self.defaultWorkingDirectory()
         refreshAgent()
+    }
+    
+    private static func defaultWorkingDirectory() -> String {
+        #if os(macOS)
+        return FileManager.default.currentDirectoryPath
+        #else
+        // On iOS, use the app's Documents directory as the working directory
+        if let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            return documentsURL.path
+        }
+        // Fallback to temp directory if Documents isn't available
+        return NSTemporaryDirectory()
+        #endif
     }
     
     func refreshAgent() {
