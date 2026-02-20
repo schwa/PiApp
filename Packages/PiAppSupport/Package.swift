@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "PiAppSupport",
+    platforms: [.macOS(.v15), .iOS(.v18), .visionOS(.v2)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -13,13 +14,16 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/xibbon/PiSwift", branch: "main"),
+        .package(url: "https://github.com/migueldeicaza/SwiftTerm", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "PiAppSupport"
+            name: "PiAppSupport",
+            dependencies: [
+                .product(name: "SwiftTerm", package: "SwiftTerm"),
+            ]
         ),
         .testTarget(
             name: "PiAppSupportTests",
