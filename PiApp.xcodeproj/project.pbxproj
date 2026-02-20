@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		454DB69E2F48C5D100B257BC /* PiAppSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 454DB69D2F48C5D100B257BC /* PiAppSupport */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4519C2292F48C55100B25ACA /* PiApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -16,6 +20,11 @@
 			path = PiApp;
 			sourceTree = "<group>";
 		};
+		4519C2412F48C58700B25ACA /* Packages */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Packages;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -23,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				454DB69E2F48C5D100B257BC /* PiAppSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +42,9 @@
 		4519C2202F48C55100B25ACA = {
 			isa = PBXGroup;
 			children = (
+				4519C2412F48C58700B25ACA /* Packages */,
 				4519C22B2F48C55100B25ACA /* PiApp */,
+				454DB69C2F48C5D000B257BC /* Frameworks */,
 				4519C22A2F48C55100B25ACA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +55,13 @@
 				4519C2292F48C55100B25ACA /* PiApp.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		454DB69C2F48C5D000B257BC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -62,9 +81,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				4519C22B2F48C55100B25ACA /* PiApp */,
+				4519C2412F48C58700B25ACA /* Packages */,
 			);
 			name = PiApp;
 			packageProductDependencies = (
+				454DB69D2F48C5D100B257BC /* PiAppSupport */,
 			);
 			productName = PiApp;
 			productReference = 4519C2292F48C55100B25ACA /* PiApp.app */;
@@ -351,6 +372,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		454DB69D2F48C5D100B257BC /* PiAppSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiAppSupport;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4519C2212F48C55100B25ACA /* Project object */;
 }
