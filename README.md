@@ -10,7 +10,7 @@ A toy macOS/iOS app to experiment with [Miguel de Icaza](https://github.com/migu
 
 ## Requirements
 
-- macOS 15+ / iOS 18+
+- macOS 26+ / iOS 26+
 - Xcode 26+
 - Anthropic API key or Claude Code subscription
 
